@@ -13,6 +13,18 @@ geektime --help
 
 也可以在虚拟环境中执行 `python -m pip install geektime-cli`。从源码安装时，在项目根目录执行 `uv tool install .`。
 
+## 让 AI 使用：安装 Skill
+
+仓库提供 [geektime-cli Skill](.agents/skills/geektime-cli/SKILL.md)，指导 AI 助手通过已安装的 `geektime` 命令查询课程、下载你有权访问的内容，以及导出 Markdown/PDF。Skill 是操作说明，不包含课程内容或账号凭据；使用前仍需按上文安装 CLI，并在首次使用时由你在 Chrome 中完成登录。
+
+在本仓库中使用 Codex 时，仓库内的 `.agents/skills/geektime-cli` 会被自动发现。要在其他项目中使用，可通过 [skills CLI](https://www.skills.sh/docs/cli) 安装到 Codex 的用户级目录（需要 Node.js）：
+
+```shell
+npx skills add QinGeneral/geektime_cli --skill geektime-cli -g -a codex
+```
+
+安装后，可对 AI 说：`使用 $geektime-cli 列出我已购的课程`，或 `使用 $geektime-cli 把已下载的「课程名称」导出为 Markdown`。Skill 也可用于支持 [Agent Skills](https://agentskills.io/) 的其他 AI 助手；安装时选择相应的 agent。若 Codex 尚未显示新 Skill，重启 Codex。
+
 ## 登录
 
 ```shell
