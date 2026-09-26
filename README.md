@@ -7,11 +7,11 @@
 需要 Python 3.10+、Google Chrome。下载视频还需要 `ffmpeg`。PDF 导出依赖 WeasyPrint 的系统库，详见 [WeasyPrint 安装说明](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#installation)。
 
 ```shell
-uv tool install .
+uv tool install geektime-cli
 geektime --help
 ```
 
-也可以在虚拟环境中执行 `python -m pip install .`。
+也可以在虚拟环境中执行 `python -m pip install geektime-cli`。从源码安装时，在项目根目录执行 `uv tool install .`。
 
 ## 登录
 

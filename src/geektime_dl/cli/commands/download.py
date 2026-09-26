@@ -1,6 +1,5 @@
 """下载命令"""
 
-from typing import Optional
 
 import typer
 from rich.console import Console
@@ -16,15 +15,15 @@ console = Console()
 @app.callback(invoke_without_command=True)
 def download(
     ctx: typer.Context,
-    output_dir: Optional[str] = typer.Option(
+    output_dir: str | None = typer.Option(
         None, "--output-dir", "-o",
         help="下载目录（默认 ./GeekTime）",
     ),
-    interval: Optional[int] = typer.Option(
+    interval: int | None = typer.Option(
         None, "--interval", "-i",
         help="接口请求间隔秒数（默认 3-5 秒随机）",
     ),
-    limit: Optional[int] = typer.Option(
+    limit: int | None = typer.Option(
         None, "--limit", "-n",
         help="限制下载课程数量（默认不限制）",
     ),
@@ -32,7 +31,7 @@ def download(
         False, "--text-only", "-t",
         help="仅下载图文，不下载音视频",
     ),
-    course_type: Optional[str] = typer.Option(
+    course_type: str | None = typer.Option(
         None, "--type",
         help="课程类型：c1(专栏), c3(视频课), p(公开课), d(每日一课), q(大厂案例课)",
     ),
@@ -57,7 +56,7 @@ def download(
 
     from geektime_dl.core.downloader import GeektimeDownloader
     from geektime_dl.core.http_client import http_client
-    from geektime_dl.utils.config import DownloadConfig, get_config
+    from geektime_dl.utils.config import get_config
 
     # 检查登录状态
     if not http_client.is_logged_in():
@@ -90,7 +89,7 @@ def download(
     if config.limit > 0:
         console.print(f"  下载限制: {config.limit} 个课程")
     if config.text_only:
-        console.print(f"  模式: [yellow]仅图文[/yellow]")
+        console.print("  模式: [yellow]仅图文[/yellow]")
     if course_types:
         console.print(f"  课程类型: {', '.join(course_types)}")
     console.print()

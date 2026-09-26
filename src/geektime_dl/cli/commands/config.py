@@ -1,6 +1,5 @@
 """配置管理命令"""
 
-from typing import Optional
 
 import typer
 from rich.console import Console
@@ -26,7 +25,7 @@ CONFIG_KEYS = {
 @app.command("show")
 def config_show() -> None:
     """显示当前配置"""
-    from geektime_dl.utils.config import get_config, CONFIG_FILE
+    from geektime_dl.utils.config import CONFIG_FILE, get_config
 
     config = get_config()
 
@@ -88,7 +87,7 @@ def config_set(
             config.download.text_only = value.lower() in ("true", "1", "yes")
     except ValueError:
         console.print(f"[red]无效的值: {value}[/red]")
-        raise typer.Exit(1)
+        raise typer.Exit(1) from None
 
     save_config(config)
     console.print(f"[green]✓[/green] 已设置 {key} = {value}")

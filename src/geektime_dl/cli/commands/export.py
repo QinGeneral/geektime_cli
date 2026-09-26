@@ -1,6 +1,5 @@
 """导出命令"""
 
-from typing import Optional
 
 import typer
 from rich.console import Console
@@ -15,11 +14,11 @@ console = Console()
 
 @app.command("markdown")
 def export_markdown(
-    course: Optional[str] = typer.Option(
+    course: str | None = typer.Option(
         None, "--course", "-c",
         help="课程名称（不指定则列出可用课程）",
     ),
-    output_dir: Optional[str] = typer.Option(
+    output_dir: str | None = typer.Option(
         None, "--output-dir", "-o",
         help="输出目录（默认为课程目录）",
     ),
@@ -35,7 +34,7 @@ def export_markdown(
       geektime export markdown --course "Go语言核心36讲"
       geektime export markdown --course "Go语言核心36讲" -o ~/Documents
     """
-    from geektime_dl.core.exporter import export_course_to_markdown, list_courses
+    from geektime_dl.core.exporter import export_course_to_markdown
     from geektime_dl.utils.config import get_config
 
     if not download_dir:
@@ -54,11 +53,11 @@ def export_markdown(
 
 @app.command("pdf")
 def export_pdf(
-    course: Optional[str] = typer.Option(
+    course: str | None = typer.Option(
         None, "--course", "-c",
         help="课程名称（不指定则列出可用课程）",
     ),
-    output_dir: Optional[str] = typer.Option(
+    output_dir: str | None = typer.Option(
         None, "--output-dir", "-o",
         help="输出目录（默认为课程目录）",
     ),
@@ -105,7 +104,7 @@ def _find_course_dir(download_dir: str, course_name: str) -> str | None:
     if len(matches) == 1:
         return matches[0]["path"]
     elif len(matches) > 1:
-        console.print(f"[yellow]找到多个匹配的课程：[/yellow]")
+        console.print("[yellow]找到多个匹配的课程：[/yellow]")
         for m in matches:
             console.print(f"  [{m['type']}] {m['name']}")
         console.print("\n[dim]请使用完整课程名称[/dim]")
@@ -123,7 +122,7 @@ def _list_available_courses(download_dir: str) -> None:
     courses = list_courses(download_dir)
     if not courses:
         console.print("[yellow]未找到已下载的课程[/yellow]")
-        console.print(f"[dim]请先运行 'geektime download' 下载课程[/dim]")
+        console.print("[dim]请先运行 'geektime download' 下载课程[/dim]")
         return
 
     console.print("[bold]已下载的课程：[/bold]\n")

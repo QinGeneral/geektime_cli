@@ -35,6 +35,11 @@ dependencies = [
     "markdown>=3.5.0",
 ]
 
+[project.urls]
+Homepage = "https://github.com/QinGeneral/geektime_cli"
+Repository = "https://github.com/QinGeneral/geektime_cli"
+Issues = "https://github.com/QinGeneral/geektime_cli/issues"
+
 [project.optional-dependencies]
 dev = [
     "pytest>=8.0.0",

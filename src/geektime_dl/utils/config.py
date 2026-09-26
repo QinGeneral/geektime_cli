@@ -5,12 +5,10 @@
 """
 
 import json
-import os
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 from platformdirs import user_config_dir
-
 
 CONFIG_DIR = Path(user_config_dir("geektime", ensure_exists=True))
 CONFIG_FILE = CONFIG_DIR / "config.json"

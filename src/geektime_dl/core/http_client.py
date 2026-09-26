@@ -273,10 +273,7 @@ class GeektimeHttpClient:
             response_json = read_from_file(json_file_name)
             is_find_cache = True
         else:
-            if is_post:
-                response_json = self.post(url, data)
-            else:
-                response_json = self.get(url, data)
+            response_json = self.post(url, data) if is_post else self.get(url, data)
             if isinstance(response_json, str):
                 save_to_file(json_file_name, response_json)
             is_find_cache = False

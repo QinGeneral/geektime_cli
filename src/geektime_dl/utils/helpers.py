@@ -1,6 +1,5 @@
 """通用工具函数"""
 
-import os
 import time
 
 import requests
@@ -23,7 +22,7 @@ def duration_to_string(duration: int) -> str:
 
 def read_from_file(file_name: str) -> str:
     """读取文本文件内容"""
-    with open(file_name, "r", encoding="utf-8") as f:
+    with open(file_name, encoding="utf-8") as f:
         return f.read()
 
 

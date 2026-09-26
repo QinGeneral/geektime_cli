@@ -10,7 +10,6 @@ import time
 
 import html2text
 from rich.console import Console
-from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from geektime_dl.core.api import (
     ALL_COURSE_URL,
@@ -280,14 +279,17 @@ class GeektimeDownloader:
             article_title = article["article_title"].replace("/", "／").replace("\t", " ")
 
             # 检查是否已下载
-            if (os.path.exists(article_parent_dir + article_title + ".md") and
-                    os.path.exists(article_parent_dir + article_title + ".html")):
-                if self.config.text_only or (
-                    os.path.exists(article_parent_dir + article_title + "-高清.mp4") or
-                    os.path.exists(article_parent_dir + article_title + "-超清.mp4")
-                ):
-                    console.print(f"[dim]跳过已下载: {article_title}[/dim]")
-                    continue
+            if (
+                os.path.exists(article_parent_dir + article_title + ".md")
+                and os.path.exists(article_parent_dir + article_title + ".html")
+                and (
+                    self.config.text_only
+                    or os.path.exists(article_parent_dir + article_title + "-高清.mp4")
+                    or os.path.exists(article_parent_dir + article_title + "-超清.mp4")
+                )
+            ):
+                console.print(f"[dim]跳过已下载: {article_title}[/dim]")
+                continue
 
             console.print(f"  文章 {index + 1}/{len(articles)}: {article_title}")
             self._get_article_detail(article["id"], article_parent_dir)
@@ -347,11 +349,11 @@ class GeektimeDownloader:
             audio_file = article_parent_dir + article_title + ".mp3"
             if audio_url and not os.path.exists(audio_file):
                 http_client.download_mp4(audio_url, audio_file)
-                console.print(f"    [green]音频下载完成[/green]")
+                console.print("    [green]音频下载完成[/green]")
 
         save_to_file(article_file_html, article_content)
         save_to_file(article_file, article_markdown)
-        console.print(f"    [green]文章保存完成[/green]")
+        console.print("    [green]文章保存完成[/green]")
 
         if not is_cache:
             self._sleep()
@@ -404,11 +406,11 @@ class GeektimeDownloader:
                     video_file = article_parent_dir + article_title + "-" + video_size_name[size] + ".mp4"
                     if video_url and not os.path.exists(video_file):
                         download_m3u8_video(video_url, video_file)
-                        console.print(f"    [green]视频下载完成[/green]")
+                        console.print("    [green]视频下载完成[/green]")
 
         save_to_file(article_file_html, article_content)
         save_to_file(article_file, article_markdown)
-        console.print(f"    [green]文章保存完成[/green]")
+        console.print("    [green]文章保存完成[/green]")
 
     # =========================================================================
     # 每日一课 / 大厂案例课下载
@@ -532,7 +534,7 @@ class GeektimeDownloader:
                 video_file = course_dir + article_title + "-" + video_size_name[video["quality"]] + ".mp4"
                 if video_url and not os.path.exists(video_file):
                     download_m3u8_video(video_url, video_file)
-                    console.print(f"    [green]视频下载完成[/green]")
+                    console.print("    [green]视频下载完成[/green]")
 
         save_to_file(article_file, article_content)
-        console.print(f"    [green]文章保存完成[/green]")
+        console.print("    [green]文章保存完成[/green]")

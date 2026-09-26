@@ -4,13 +4,11 @@
 """
 
 import os
+from contextlib import suppress
 
 import m3u8
 import requests
 from Crypto.Cipher import AES
-
-from geektime_dl.utils.helpers import read_binary_from_file, write_binary_to_file
-
 
 # 密钥缓存
 _store_keys: dict[str, bytes] = {}
@@ -38,7 +36,7 @@ def _download_m3u8_file(url: str, path: str) -> None:
 
 def _parse_m3u8(path: str) -> list[str]:
     """解析 m3u8 文件，提取视频片段 URL"""
-    with open(path, "r") as f:
+    with open(path) as f:
         lines = f.readlines()
         video_urls = []
         for line in lines:
@@ -56,10 +54,7 @@ def _download_ts(url: str, path: str, key) -> None:
 
     cryptor = None
     if key is not None:
-        if isinstance(key, str):
-            key_content = _get_key(key)
-        else:
-            key_content = _get_key(key.uri)
+        key_content = _get_key(key) if isinstance(key, str) else _get_key(key.uri)
         if len(key_content) != 0:
             _store_key = key_content
         elif _store_key is not None:
@@ -144,7 +139,5 @@ def download_m3u8_video(url: str, output_path: str) -> None:
     # 清理 ts 文件
     _clean_ts(ts_filenames)
     if os.path.exists(ts_dir_path):
-        try:
+        with suppress(OSError):
             os.removedirs(ts_dir_path)
-        except OSError:
-            pass
